@@ -145,7 +145,15 @@ export default function AuditStream({ reportId, onComplete }) {
 
   const displaySteps = STEPS.filter((s) => s.key !== 'complete' || completedSteps.has('complete'));
   const lastMessage = messages.length > 0 ? messages[messages.length - 1] : '';
-  const synthesizeProgress = parseSynthesizeProgress(lastMessage);
+  const synthesizeProgress = (() => {
+    const fromLast = parseSynthesizeProgress(lastMessage);
+    if (fromLast) return fromLast;
+    for (let i = messages.length - 1; i >= 0; i--) {
+      const p = parseSynthesizeProgress(messages[i]);
+      if (p) return p;
+    }
+    return null;
+  })();
 
   return (
     <div className="w-full max-w-xl">
