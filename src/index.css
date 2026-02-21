@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-[#0a0d12] text-slate-100 antialiased;
+}
+
+@media print {
+  body { background: #fff; color: #111; }
+}
+
+/* Styled scrollbars for report code blocks (dark theme) */
+.scrollbar-report {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(148 163 184 / 0.5) transparent;
+}
+.scrollbar-report::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-report::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-report::-webkit-scrollbar-thumb {
+  background: rgb(148 163 184 / 0.35);
+  border-radius: 4px;
+}
+.scrollbar-report::-webkit-scrollbar-thumb:hover {
+  background: rgb(148 163 184 / 0.5);
+}
+.scrollbar-report-green {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(52 211 153 / 0.5) transparent;
+}
+.scrollbar-report-green::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-report-green::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-report-green::-webkit-scrollbar-thumb {
+  background: rgb(52 211 153 / 0.35);
+  border-radius: 4px;
+}
+.scrollbar-report-green::-webkit-scrollbar-thumb:hover {
+  background: rgb(52 211 153 / 0.5);
+}
