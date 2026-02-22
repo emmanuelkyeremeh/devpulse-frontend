@@ -3,11 +3,11 @@ import { useEffect, useState, useRef } from 'react';
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 const STEPS = [
-  { key: 'clone', label: 'Cloning repository', match: /clon/i },
-  { key: 'semgrep', label: 'Running analysis', match: /semgrep/i },
-  { key: 'depgraph', label: 'Building dependency graph', match: /dependen|graph/i },
-  { key: 'synthesize', label: 'Synthesizing findings with AI', match: /synthesiz|finding/i },
-  { key: 'complete', label: 'Report complete', match: /complete|done/i },
+  { key: 'clone', label: 'Cloning repository', match: /clon/i, doneMatch: /^Cloned\.?$/i },
+  { key: 'semgrep', label: 'Running analysis', match: /semgrep/i, doneMatch: /Semgrep complete\.?|Semgrep completed with no findings/i },
+  { key: 'depgraph', label: 'Building dependency graph', match: /dependen|graph/i, doneMatch: /Dependency graph built\.?/i },
+  { key: 'synthesize', label: 'Synthesizing findings with AI', match: /synthesiz|finding/i, doneMatch: /Synthesis complete\.?/i },
+  { key: 'complete', label: 'Report complete', match: /complete|done/i, doneMatch: /Report complete\.?/i },
 ];
 
 function formatElapsed(seconds) {
@@ -71,6 +71,12 @@ export default function AuditStream({ reportId, onComplete }) {
         if (data.type === 'progress') {
           const msg = data.message || '';
           setMessages((prev) => [...prev, msg]);
+          for (const step of STEPS) {
+            if (step.doneMatch && step.doneMatch.test(msg)) {
+              setCompletedSteps((prev) => new Set([...prev, step.key]));
+              if (step.key === 'complete') setActiveStepKey(null);
+            }
+          }
           for (const step of STEPS) {
             if (step.match.test(msg)) {
               const prevActive = activeStepKeyRef.current;

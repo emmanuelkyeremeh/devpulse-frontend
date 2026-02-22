@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LandingBackground from '../components/LandingBackground';
-import Logo from '../components/Logo';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import LandingBackground from "../components/LandingBackground";
+import Logo from "../components/Logo";
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export default function Home() {
-  const [repoUrl, setRepoUrl] = useState('');
+  const [repoUrl, setRepoUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError('');
+    setError("");
     setLoading(true);
     try {
       const res = await fetch(`${API_URL}/api/audit`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ repoUrl: repoUrl.trim() }),
       });
       const data = await res.json().catch(() => ({}));
@@ -30,9 +30,9 @@ export default function Home() {
         navigate(`/report/${data.reportId}`);
         return;
       }
-      setError('Invalid response from server');
+      setError("Invalid response from server");
     } catch (err) {
-      setError(err.message || 'Network error');
+      setError(err.message || "Network error");
     } finally {
       setLoading(false);
     }
@@ -43,12 +43,15 @@ export default function Home() {
       <LandingBackground />
 
       <header className="flex items-center justify-between px-6 py-5 w-full max-w-5xl mx-auto">
-        <a href="/" className="flex items-center gap-2 text-white hover:text-cyan-400/90 transition">
+        <a
+          href="/"
+          className="flex items-center gap-2 text-white hover:text-cyan-400/90 transition"
+        >
           <Logo size={28} />
           <span className="text-xl font-semibold tracking-tight">DevPulse</span>
         </a>
         <a
-          href="https://github.com"
+          href="https://github.com/emmanuelkyeremeh/devpulse-frontend"
           target="_blank"
           rel="noopener noreferrer"
           className="text-slate-400 hover:text-slate-200 text-sm transition"
@@ -63,7 +66,8 @@ export default function Home() {
             Code intelligence, on demand
           </h1>
           <p className="text-slate-400 text-lg mb-10 max-w-md mx-auto">
-            Audit any public GitHub repo. Get structured security and quality reports—like an automated senior engineer review.
+            Audit any public GitHub repo. Get structured security and quality
+            reports like an automated senior engineer review.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -81,7 +85,7 @@ export default function Home() {
               disabled={loading}
               className="w-full py-3.5 rounded-xl font-medium text-white transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border border-cyan-400/40 bg-slate-900/80 hover:bg-slate-800/90 hover:border-cyan-400/60 shadow-[0_0_20px_-4px_rgba(34,211,238,0.25)] hover:shadow-[0_0_24px_-4px_rgba(34,211,238,0.35)]"
             >
-              {loading ? 'Starting audit…' : 'Audit repository'}
+              {loading ? "Starting audit…" : "Audit repository"}
             </button>
           </form>
 
